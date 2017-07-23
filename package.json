@@ -1,0 +1,26 @@
+{
+  "name": "progressbar-md",
+  "version": "0.0.0",
+  "description": "A simple cli progressbar module for NodeJS.",
+  "main": "progressbar-md.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "progressbar"
+  ],
+  "author": "Marton Demeter <marton1029@gmail.com>",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "pad-md": "0.0.2"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marton-demeter/progressbar-md.git"
+  },
+  "bugs": {
+    "url": "https://github.com/marton-demeter/progressbar-md/issues"
+  },
+  "homepage": "https://github.com/marton-demeter/progressbar-md#readme"
+}
