@@ -41,7 +41,7 @@ Tokens for formatting the layout:
   - ':str' - String, message to display
   
 ```javascript
-  progressbar.set.format(':pct :bar:spc:str');
+  progressbar.format(':pct :bar:spc:str');
 ```
 
 ---
@@ -49,7 +49,7 @@ Tokens for formatting the layout:
 Set a message to be displayed for ALL updates.
 
 ```javascript
-  progressbar.set.message('Processing...');
+  progressbar.message('Processing...');
   
   progressbar.update(10);
 ```
@@ -59,8 +59,8 @@ Set a message to be displayed for ALL updates.
 Modify the width of the progressbar.
 
 ```javascript
-  progressbar.set.width(25);
-  progressbar.set.min_width(2);
+  progressbar.width(25);
+  progressbar.min_width(2);
 ```
 
 ---
@@ -68,9 +68,9 @@ Modify the width of the progressbar.
 Modify what the progressbar looks like.
 
 ```javascript
-  progressbar.set.filled('#');
-  progressbar.set.empty(' ');
-  progressbar.set.boundary('[',']');
+  progressbar.filled('#');
+  progressbar.empty(' ');
+  progressbar.boundary('[',']');
 ```
 
 ### Advanced Usage

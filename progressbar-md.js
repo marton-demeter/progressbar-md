@@ -22,7 +22,7 @@ ProgressBar = function(options){
   this.target = Number();
   process.on('exit', () => {
     this.close();
-  })
+  });
 };
 
 util.inherits(ProgressBar, EventEmitter);
@@ -35,22 +35,21 @@ ProgressBar.prototype.new = function() {
   this.progress('0');
   this.cursor.hide();
   console.log();
-}
+};
 ProgressBar.prototype.close = function() {
   this.progress('0');
   console.log();
   this.cursor.show();
-}
+};
 ProgressBar.prototype.progress = function(progress) {
   this.pr = progress;
   this.f = Math.floor((parseInt(this.pr)/100)*this.w);
-}
-ProgressBar.prototype.set = {};
-ProgressBar.prototype.set.format = function(format) {
-  this.fmt = format;
-}
-ProgressBar.prototype.set.message = function(text) {
-  this.str = text;
+};
+ProgressBar.prototype.format = function(self,format) {
+  self.fmt = format;
+};
+ProgressBar.prototype.message = function(self,text) {
+  self.str = text;
 };
 ProgressBar.prototype.cursor = {};
 ProgressBar.prototype.cursor.hide = function() {
@@ -59,40 +58,40 @@ ProgressBar.prototype.cursor.hide = function() {
 ProgressBar.prototype.cursor.show = function() {
   process.stdout.write(`\x1B[?25h`);
 };
-ProgressBar.prototype.set.width = function(width) {
+ProgressBar.prototype.width = function(width) {
   this.w = width;
 };
-ProgressBar.prototype.set.min_width = function(width) {
+ProgressBar.prototype.min_width = function(width) {
   this.mw = width;
-}
-ProgressBar.prototype.set.filled = function(fill) {
+};
+ProgressBar.prototype.filled = function(fill) {
   this.c = fill;
 };
-ProgressBar.prototype.set.empty = function(fill) {
+ProgressBar.prototype.empty = function(fill) {
   this.i = fill;
-}
-ProgressBar.prototype.set.boundary = function(left, right) {
+};
+ProgressBar.prototype.boundary = function(left, right) {
   this.bl = left;
   this.br = right;
 };
 ProgressBar.prototype.render = function(fn = null, fmsg = null, ffn = null) {
   fmsg?this.str=fmsg:null;
   ffn?fn=ffn:null;
-  let str = '\r';
-      str += this.fmt;
+  let txt = '\r';
+      txt += this.fmt;
   let bar = `${this.bl}`;
       bar += `${this.c.repeat(this.f)}`;
       bar += `${this.i.repeat(this.e)}`;
       bar += `${this.br}`;
-  str = str.replace(':bar', bar);
-  str = str.replace(':pct', `${pad.left(`${this.pr}%`,4)}`);
-  if(fn) var col=process.stdout.columns - str.length - fn(`${this.str}`).length + ':str'.length + ':spc'.length;
-  str = str.replace(':str', fn?`${fn(this.str).message}`:`${this.str}`);
-  if(!fn) var col=process.stdout.columns - str.length + ':spc'.length;
-  if(col<0){ var nb=this.newBar(col); str = str.replace(`${bar}`, nb); }
-  else if(this.w !== 20 && this.pr === '100'){ this.set.width(20)}
-  str = str.replace(':spc', ' '.repeat(col<0?0:col))
-  process.stdout.write(str);
+  txt = txt.replace(':bar', bar);
+  txt = txt.replace(':pct', `${pad.left(`${this.pr}%`,4)}`);
+  if(fn&&this.str) var col=process.stdout.columns-txt.length-fn(`${this.str}`).length+':str'.length+':spc'.length;
+  txt = txt.replace(':str', fn&&this.str?`${fn(this.str).message}`:`${this.str}`);
+  if(!fn) var col=process.stdout.columns - txt.length + ':spc'.length;
+  if(col<0){ var nb=this.newBar(col); txt = txt.replace(`${bar}`, nb); }
+  else if(this.w !== 20 && this.pr === '100'){ this.width(20)}
+  txt = txt.replace(':spc', ' '.repeat(col<0?0:col))
+  process.stdout.write(txt);
 };
 
 ProgressBar.prototype.newBar = function(col) {
@@ -117,7 +116,7 @@ ProgressBar.prototype.update = function(percentage, options) {
   fn = options.function || null;
   fmsg = options.fmessage || null;
   ffn = options.ffunction || null;
-  if(options.message) this.set.message(options.message);
+  if(options.message) this.message(self,options.message);
   this.target = Math.round(this.limit(percentage)).toString();
   if(this.pr !== this.target) {
     this.interpolate_t = setInterval(function() {
