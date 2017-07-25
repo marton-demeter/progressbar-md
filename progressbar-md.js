@@ -45,10 +45,11 @@ ProgressBar.prototype.progress = function(progress) {
   this.pr = progress;
   this.f = Math.floor((parseInt(this.pr)/100)*this.w);
 }
-ProgressBar.prototype.format = function(format) {
+ProgressBar.prototype.set = {};
+ProgressBar.prototype.set.format = function(format) {
   this.fmt = format;
 }
-ProgressBar.prototype.message = function(text) {
+ProgressBar.prototype.set.message = function(text) {
   this.str = text;
 };
 ProgressBar.prototype.cursor = {};
@@ -58,13 +59,19 @@ ProgressBar.prototype.cursor.hide = function() {
 ProgressBar.prototype.cursor.show = function() {
   process.stdout.write(`\x1B[?25h`);
 };
-ProgressBar.prototype.width = function(width) {
+ProgressBar.prototype.set.width = function(width) {
   this.w = width;
 };
-ProgressBar.prototype.complete = function(fill) {
+ProgressBar.prototype.set.min_width = function(width) {
+  this.mw = width;
+}
+ProgressBar.prototype.set.filled = function(fill) {
   this.c = fill;
 };
-ProgressBar.prototype.boundary = function(left, right) {
+ProgressBar.prototype.set.empty = function(fill) {
+  this.i = fill;
+}
+ProgressBar.prototype.set.boundary = function(left, right) {
   this.bl = left;
   this.br = right;
 };
@@ -83,7 +90,7 @@ ProgressBar.prototype.render = function(fn = null, fmsg = null, ffn = null) {
   str = str.replace(':str', fn?`${fn(this.str).message}`:`${this.str}`);
   if(!fn) var col=process.stdout.columns - str.length + ':spc'.length;
   if(col<0){ var nb=this.newBar(col); str = str.replace(`${bar}`, nb); }
-  else if(this.w !== 20 && this.pr === '100'){ this.width(20)}
+  else if(this.w !== 20 && this.pr === '100'){ this.set.width(20)}
   str = str.replace(':spc', ' '.repeat(col<0?0:col))
   process.stdout.write(str);
 };
@@ -110,13 +117,8 @@ ProgressBar.prototype.update = function(percentage, options) {
   fn = options.function || null;
   fmsg = options.fmessage || null;
   ffn = options.ffunction || null;
-  if(options.message) this.message(options.message);
+  if(options.message) this.set.message(options.message);
   this.target = Math.round(this.limit(percentage)).toString();
-  if(parseInt(this.target)-parseInt(this.pr) > 99) this.pr = '100';
-  else if(parseInt(this.target)-parseInt(this.pr) > 74) this.tick = 1;
-  else if(parseInt(this.target)-parseInt(this.pr) > 49) this.tick = 2;
-  else if(parseInt(this.target)-parseInt(this.pr) > 24) this.tick = 3;
-  else this.tick = 4;
   if(this.pr !== this.target) {
     this.interpolate_t = setInterval(function() {
       if(self.pr === self.target) clearInterval(self.interpolate_t);
