@@ -1,6 +1,6 @@
 {
   "name": "progressbar-md",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A simple cli progressbar module for NodeJS.",
   "main": "progressbar-md.js",
   "scripts": {
