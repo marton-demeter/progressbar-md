@@ -45,11 +45,11 @@ ProgressBar.prototype.progress = function(progress) {
   this.pr = progress;
   this.f = Math.floor((parseInt(this.pr)/100)*this.w);
 };
-ProgressBar.prototype.format = function(self,format) {
-  self.fmt = format;
+ProgressBar.prototype.format = function(format) {
+  this.fmt = format;
 };
-ProgressBar.prototype.message = function(self,text) {
-  self.str = text;
+ProgressBar.prototype.message = function(text) {
+  this.str = text;
 };
 ProgressBar.prototype.cursor = {};
 ProgressBar.prototype.cursor.hide = function() {
@@ -116,7 +116,7 @@ ProgressBar.prototype.update = function(percentage, options) {
   fn = options.function || null;
   fmsg = options.fmessage || null;
   ffn = options.ffunction || null;
-  if(options.message) this.message(self,options.message);
+  if(options.message) this.message(options.message);
   this.target = Math.round(this.limit(percentage)).toString();
   if(this.pr !== this.target) {
     this.interpolate_t = setInterval(function() {
